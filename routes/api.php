@@ -37,7 +37,11 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get("/{order}", [OrderController::class, "show"]);
         Route::post("/new", [OrderController::class, "create"]); 
     });
-    Route::prefix("/products")->group(function(){
-        Route::post("/create", [ProductController::class, "create"]);
+    
+    Route::group(['middleware' => ['role:super-admin']], function () {
+        Route::prefix("/products")->group(function(){
+            Route::post("/create", [ProductController::class, "create"]);
+        });
     });
+    
 });
