@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,20 +18,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Authentication
+//Authentication routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-//Products
+//Public routes
 Route::prefix('/products')->group(function(){
     Route::get('/', [ProductController::class, 'index']);
     Route::get('/{product}', [ProductController::class, 'show']);
 });
 
-//Personal Section
 Route::middleware('auth:sanctum')->group(function(){
+    //User Routes
     Route::prefix("user")->group(function(){
-        Route::get("/", [UserController::class, "info"]);
+        Route::get("/info", [UserController::class, 'info']);
+        Route::put("/update", [UserController::class, 'update']);
     });
     Route::prefix("/orders")->group(function(){
         Route::get("/", [OrderController::class, "index"]);
@@ -38,10 +40,13 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post("/new", [OrderController::class, "create"]); 
     });
     
+    //Admin routes
     Route::group(['middleware' => ['role:super-admin']], function () {
         Route::prefix("/products")->group(function(){
             Route::post("/create", [ProductController::class, "create"]);
+            Route::put("/{product}", [ProductController::class, "update"]);
         });
+        Route::get('/users', [UserController::class, 'index']);
     });
     
 });
