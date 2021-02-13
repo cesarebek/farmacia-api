@@ -35,18 +35,31 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::put("/update", [UserController::class, 'update']);
     });
     Route::prefix("/orders")->group(function(){
-        Route::get("/", [OrderController::class, "index"]);
+        Route::get("/", [OrderController::class, "userOrders"]);
         Route::get("/{order}", [OrderController::class, "show"]);
         Route::post("/new", [OrderController::class, "create"]); 
     });
     
     //Admin routes
     Route::group(['middleware' => ['role:super-admin']], function () {
+        //Admin routes for Products managment
         Route::prefix("/products")->group(function(){
             Route::post("/create", [ProductController::class, "create"]);
             Route::put("/{product}", [ProductController::class, "update"]);
+            Route::delete("/{product}", [ProductController::class, "destroy"]);
         });
-        Route::get('/users', [UserController::class, 'index']);
+        //Admin routes for Users managment
+        Route::prefix('users')->group(function(){
+            Route::get('/', [UserController::class, 'index']);
+            Route::get('/{user}', [UserController::class, 'destroy']);
+        });
+        
+        //Admin routes for Orders managment
+        Route::prefix('/orders')->group(function(){
+            Route::get("/", [OrderController::class, "index"]);
+            Route::get("/{order}", [OrderController::class, "destroy"]);
+        });
+        
     });
     
 });

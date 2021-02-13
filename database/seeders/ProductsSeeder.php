@@ -20,13 +20,15 @@ class ProductsSeeder extends Seeder
                 'title' => 'Tachipirina',
                 'description' => 'Dolori alla testa',
                 'price' => 9.90,
-                'stock' => 100
+                'stock' => 100,
+                'product_image' => 'http://127.0.0.1:8000/storage/product_images/tachipirina_1613251939.jpeg'
             ],
             [
                 'title' => 'Aspirina',
                 'description' => 'Dolori alla testa',
                 'price' => 9.90,
-                'stock' => 100
+                'stock' => 100,
+                'product_image' => 'http://127.0.0.1:8000/storage/product_images/aspirina_1613251862.jpg'
             ],
         ];
 

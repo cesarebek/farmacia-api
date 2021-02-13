@@ -9,8 +9,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
-{
+{   
+    //All Orders
     public function index(){
+      $orders = Order::all();
+      return response()->json(['data' => $orders]);
+    }
+
+    //Auth User Orders
+    public function userOrders(){
       //Searching for whole user orders
       $orders = Auth::user()->orders;
       //Conditional response
@@ -20,9 +27,10 @@ class OrderController extends Controller
       //Final response
       return response()->json(['data' => $orders]);
     }
-
+    
+    //Display a specific user order
     public function show(Order $order){
-      //Conditional response for order existence
+      //Check if order exists
       if(is_null($order)){
         return response()->json(['message' => 'Order does not exist']);
       }
@@ -32,6 +40,7 @@ class OrderController extends Controller
       return response()->json(['data' => $products ]);
     }
 
+    //Create an order
     public function create(Request $req){
       //Requests validation
       $validator = Validator::make($req->all(), [
@@ -56,5 +65,17 @@ class OrderController extends Controller
       return response()->json([
         'message'=>'Order placed.'
       ]);
+    }
+
+    //Delete an Order
+    public function destroy(Order $order){
+      //Check if order exists
+      if(is_null($order)){
+        return response()->json(['message' => 'Order does not exist']);
+      }
+      //Delete order
+      $order->delete();
+      //Response
+      return response()->json(['message' => 'Order was successfully deleted']);
     }
 }

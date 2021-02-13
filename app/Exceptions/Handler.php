@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -38,8 +39,15 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, Throwable $exception)
-{
+    protected function unauthenticated($request, AuthenticationException $exception){
+        if(!$request->expectsJson()){
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ], 401);
+        }
+    }
+
+    public function render($request, Throwable $exception){
     if ($exception instanceof \Spatie\Permission\Exceptions\UnauthorizedException) {
         return response()->json([
             'responseMessage' => 'You do not have the required authorization for this action.',
@@ -48,5 +56,5 @@ class Handler extends ExceptionHandler
     }
 
     return parent::render($request, $exception);
-}
+    }
 }
