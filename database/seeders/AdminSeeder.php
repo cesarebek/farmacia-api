@@ -19,8 +19,9 @@ class AdminSeeder extends Seeder
     {
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
-
-        $role = Role::create(['name' => 'super-admin']);
+    
+        $role1 = Role::create(['name' => 'super-admin']);
+        $role2 = Role::create(['name' => 'customer']);
 
         $user = User::factory()->create([
             'name' => 'Super-Admin',
@@ -28,6 +29,6 @@ class AdminSeeder extends Seeder
             'password' => Hash::make('admin')
         ]);
 
-        $user->assignRole($role);
+        $user->assignRole($role1);
     }
 }

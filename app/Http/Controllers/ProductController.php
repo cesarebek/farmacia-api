@@ -15,7 +15,7 @@ class ProductController extends Controller
     {   
         //Whole products of the store
         $products = Product::all();
-        return response()->json(['products'=>$products]);
+        return response()->json(['products' => $products]);
     }
 
     //Create a new product
@@ -25,35 +25,27 @@ class ProductController extends Controller
             "title" => "required",
             "price" => "required|integer",
             "stock"=> "required|integer",
-            'product_image' => 'image|max:1999|required',
+            "product_image" => "image|max:1999|required",
+            "category" => "required|string"
         ]);
         //Inputs validion  
         if($validator->fails()) {
             return response()->json(["message" => $validator->errors()]);
         }
-
-        //Get just filename
-        $fileNameWithExt = pathinfo($req->file('product_image')->getClientOriginalName(), PATHINFO_FILENAME);
-        //Get just extension
-        $extension = $req->file('product_image')->getClientOriginalExtension();
-        //File to store
-        $fileNameToStore = $fileNameWithExt.'_'.time().'.'.$extension;
         //Upload image
-        $localStore = $req->file('product_image')->storeAs('public/product_images', $fileNameToStore);
+        $localStore = $req->file('product_image')->store('public/product_images');
         
         $path = Storage::url($localStore);
         //Get host
         $host = $req->getSchemeAndHttpHost();
+        
+        $inputs = $req->all();
+        //Assigning image path
+        $inputs['product_image'] = $host.$path;
         // Creating product
-        $product = Product::create([
-            'title' => $req->title,
-            'description' => $req->description,
-            'price' => $req->price,
-            'stock' => $req->stock,
-            'product_image' => $host.$path
-        ]);
+        $product = Product::create($inputs);
         //Product created response
-        return response()->json(['message'=>'Product created successfully', 'data' => $product]);
+        return response()->json(['message' => 'Product created successfully', 'data' => $product]);
          
     }
 

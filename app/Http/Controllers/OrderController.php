@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderProduct;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -60,6 +61,10 @@ class OrderController extends Controller
           'product_id' => $item['product_id'],
           'quantity' => $item['quantity']
         ]);
+
+        //Updating the product stock quantity
+        $product = Product::find($item['product_id']);
+        $product->update(['stock' =>  $product->stock - $item['quantity']]);
       }
       //Response
       return response()->json([

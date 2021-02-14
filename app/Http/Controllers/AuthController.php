@@ -12,27 +12,36 @@ class AuthController extends Controller
 {
     // Register
     public function register(Request $req) {
+        //Inputs must be...
         $validator = Validator::make($req->all(), [
             "name" => "required",
             "email" => "required|email",
             "password" => "required",
         ]);
-
+        
         if($validator->fails()) {
             return response()->json(["message" => $validator->errors()]);
         }
-
+        //Check if user already exists
         if(User::where('email', $req['email'])->exists()){
             return response()->json([
                 "message"=>"User already exist, please login"
             ], 400);
         }
-
+        //Hashing password
         $req["password"] = Hash::make($req["password"]);
-
+        //Creating user
         $user = User::create($req->all());
+        //Assign 'customer' role to newly created user
+        $user->assignRole('customer');
+        //Token creation
+        $token = $user->createToken('token')->plainTextToken;
 
-        return response()->json(["message" => "Success! registration completed", "data" => $user]);
+        return response()->json([
+            "message" => "Success! registration completed", 
+            "token" => $token,
+            "data" => $user
+        ]);
            
     }
 
@@ -57,11 +66,11 @@ class AuthController extends Controller
         if(Auth::attempt(['email' => $req->email, 'password' => $req->password])){
             
         $token = $user->createToken('token')->plainTextToken;
-
+        $user->roles;
         return response()->json([
             'message'=>'User successfully logged!',
             "token" => $token, 
-            "data" => $user
+            "data" => $user,
             ]);
         } else {
             return response()->json([
