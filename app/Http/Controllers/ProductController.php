@@ -14,7 +14,7 @@ class ProductController extends Controller
     public function index()
     {   
         //Whole products of the store
-        $products = Product::all();
+        $products = Product::inRandomOrder()->paginate(10);
         return response()->json(['products' => $products]);
     }
 

@@ -14,28 +14,26 @@ class ProductsSeeder extends Seeder
      */
     public function run()
     {
-        //Default products
+        //Prodotti Parafarmacia
         $products = [
             [
                 'title' => 'Tachipirina',
                 'description' => 'Dolori alla testa',
-                'price' => 9.90,
+                'price' => 14,
                 'stock' => 100,
                 'product_image' => 'http://127.0.0.1:8000/storage/product_images/tachipirina_1613251939.jpeg',
-                'category' => 'parafarmacia'
             ],
             [
                 'title' => 'Aspirina',
                 'description' => 'Dolori alla testa',
-                'price' => 9.90,
+                'price' => 10,
                 'stock' => 100,
                 'product_image' => 'http://127.0.0.1:8000/storage/product_images/aspirina_1613251862.jpg',
-                'category' => 'parafarmacia'
             ],
         ];
-
+        //Attaching category for Parafarmia products
         foreach($products as $product){
-            Product::create($product);
+            Product::create($product)->categories()->attach(1);
         }
     }
 }
