@@ -21,14 +21,14 @@ class ProductsSeeder extends Seeder
                 'description' => 'Dolori alla testa',
                 'price' => 14,
                 'stock' => 100,
-                'product_image' => 'http://127.0.0.1:8000/storage/product_images/tachipirina_1613251939.jpeg',
+                'product_image' => 'https://bek-farmacia.herokuapp.com/storage/product_images/tachipirina_1613251939.jpeg',
             ],
             [
                 'title' => 'Aspirina',
                 'description' => 'Dolori alla testa',
                 'price' => 10,
                 'stock' => 100,
-                'product_image' => 'http://127.0.0.1:8000/storage/product_images/aspirina_1613251862.jpg',
+                'product_image' => 'https://bek-farmacia.herokuapp.com/storage/product_images/aspirina_1613251862.jpg',
             ],
         ];
         //Attaching category for Parafarmia products

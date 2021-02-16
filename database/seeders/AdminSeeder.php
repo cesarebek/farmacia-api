@@ -23,7 +23,7 @@ class AdminSeeder extends Seeder
         $role1 = Role::create(['name' => 'super-admin']);
         $role2 = Role::create(['name' => 'customer']);
 
-        $user = User::factory()->create([
+        $user = User::create([
             'name' => 'Super-Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('admin')
