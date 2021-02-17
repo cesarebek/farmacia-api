@@ -61,14 +61,23 @@ class OrderController extends Controller
           'product_id' => $item['product_id'],
           'quantity' => $item['quantity']
         ]);
-
         //Updating the product stock quantity
         $product = Product::find($item['product_id']);
         $product->update(['stock' =>  $product->stock - $item['quantity']]);
       }
+      $amount = 0;
+      foreach($order->products as $product){
+        $amount += $product->price * $product->pivot->quantity;
+      }
+      $items_count = 0;
+      foreach($order->products as $product){
+        $items_count += $product->pivot->quantity;
+      }
       //Response
       return response()->json([
-        'message'=>'Order placed.'
+        'message' => 'Order placed.',
+        'items_count' => $items_count,
+        'total_amount' => $amount
       ]);
     }
 

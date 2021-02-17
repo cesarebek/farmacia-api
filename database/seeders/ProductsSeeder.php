@@ -22,6 +22,8 @@ class ProductsSeeder extends Seeder
                 'price' => 14,
                 'stock' => 100,
                 'product_image' => 'https://bek-farmacia.herokuapp.com/storage/product_images/tachipirina_1613251939.jpeg',
+                'category_id' => 1
+                
             ],
             [
                 'title' => 'Aspirina',
@@ -29,11 +31,12 @@ class ProductsSeeder extends Seeder
                 'price' => 10,
                 'stock' => 100,
                 'product_image' => 'https://bek-farmacia.herokuapp.com/storage/product_images/aspirina_1613251862.jpg',
+                'category_id' => 1
             ],
         ];
         //Attaching category for Parafarmia products
         foreach($products as $product){
-            Product::create($product)->categories()->attach(1);
+            Product::create($product);
         }
     }
 }

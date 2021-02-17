@@ -28,7 +28,8 @@ Route::prefix('/products')->group(function(){
     Route::get('/', [ProductController::class, 'index']);
     Route::get('/{product}', [ProductController::class, 'show']);
 });
-Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categories', [CategoryController::class, 'allCategories']);
+Route::get('/categories/{category}', [CategoryController::class, 'categoryProducts']);
 
 Route::middleware('auth:sanctum')->group(function(){
     //User Routes
@@ -59,7 +60,7 @@ Route::middleware('auth:sanctum')->group(function(){
         //Admin routes for Orders managment
         Route::prefix('/orders')->group(function(){
             Route::get("/", [OrderController::class, "index"]);
-            Route::get("/{order}", [OrderController::class, "destroy"]);
+            Route::delete("/{order}", [OrderController::class, "destroy"]);
         });
         
     });

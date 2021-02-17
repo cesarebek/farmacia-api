@@ -15,6 +15,7 @@ class Order extends Model
     }
 
     public function products(){
-        return $this->belongsToMany(Product::class);
+        //Pivot attribute allows me to access the quantity from the order_product table
+        return $this->belongsToMany(Product::class)->withPivot('quantity');
     }
 }

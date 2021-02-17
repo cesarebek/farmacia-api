@@ -24,9 +24,8 @@ class ProductController extends Controller
         $validator = Validator::make($req->all(), [
             "title" => "required",
             "price" => "required|integer",
-            "stock"=> "required|integer",
+            "stock" => "required|integer",
             "product_image" => "image|max:1999|required",
-            "category" => "required|string"
         ]);
         //Inputs validion  
         if($validator->fails()) {

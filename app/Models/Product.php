@@ -15,10 +15,10 @@ class Product extends Model
         'stock',
         'price',
         'product_image',
-        'category'
+        'category_id'
     ];
 
-     public function categories(){
-        return $this->belongsToMany(Category::class);
+    public function categories(){
+        return $this->belongsTo(Category::class);
     }
 }
