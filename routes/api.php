@@ -38,7 +38,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::put("/update", [UserController::class, 'update']);
     });
     Route::prefix("/orders")->group(function(){
-        Route::get("/", [OrderController::class, "userOrders"]);
+        Route::get("/user-orders", [OrderController::class, "userOrders"]);
         Route::get("/{order}", [OrderController::class, "show"]);
         Route::post("/new", [OrderController::class, "create"]); 
     });

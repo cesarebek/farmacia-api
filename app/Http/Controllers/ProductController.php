@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -51,8 +52,9 @@ class ProductController extends Controller
     //Display specific product
     public function show(Product $product)
     {   
+        $category = Category::find($product->category_id);
         //Specific product response
-        return response()->json(['data' => $product]);
+        return response()->json(['data' => $product, 'category' => $category]);
     }
 
     //Update a product
@@ -70,10 +72,6 @@ class ProductController extends Controller
         //Inputs validion
         if($validator->fails()){
             return response()->json(['message' => $validator->errors()]);
-        }
-        //Check if product exists
-        if(is_null($product)){
-            return response()->json(['message' => 'Product not found.']);
         }
         //Updating product
         $productUpdate = $product->update($req->all());
