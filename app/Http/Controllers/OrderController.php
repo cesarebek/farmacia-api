@@ -14,6 +14,23 @@ class OrderController extends Controller
     //All Orders
     public function index(){
       $orders = Order::all();
+      foreach($orders as $order){
+        $products = $order->products;
+
+        $amount = 0; 
+        foreach($products as $product){
+          $amount += $product->price * $product->pivot->quantity;
+        }
+        $order['amount'] = $amount;
+
+        //Items count
+        $items_count = 0;
+        foreach($order->products as $product){
+          $items_count += $product->pivot->quantity;
+        }
+        $order['items_count'] = $items_count;
+      }
+      
       return response()->json(['data' => $orders]);
     }
 
@@ -21,6 +38,20 @@ class OrderController extends Controller
     public function userOrders(){
       //Searching for whole user orders
       $orders = Auth::user()->orders;
+      foreach($orders as $order){
+        $products = $order->products;
+        $order['products'] = $products;
+
+        //Amount count
+        $amount = 0; 
+        foreach($products as $product){
+          $amount += $product->price * $product->pivot->quantity;
+        }
+        $order['amount'] = $amount;
+
+      }
+      
+    
       //Conditional response
       if(is_null($orders)){
         return response()->json(['message' => 'User has not orders yet.']);

@@ -12,6 +12,9 @@ class UserController extends Controller
   public function index(){
     //Catching all the signed users
     $users = User::all();
+    foreach($users as $user){
+      $user->roles;
+    }
     //Response
     return response()->json(['data' => $users]);
   }
@@ -20,6 +23,7 @@ class UserController extends Controller
   public function info(){
     //Catching the authenticated user
     $user = Auth::user();
+    $user->roles;
     //Response for unlogged user
     if($user === null){
       return response()->json(['message' => 'Please login.']);

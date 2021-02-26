@@ -15,16 +15,17 @@ class ProductController extends Controller
     public function index()
     {   
         //Whole products of the store
-        $products = Product::inRandomOrder()->paginate(10);
-        return response()->json(['products' => $products]);
+        $products = Product::all();
+        return response()->json(['data' => $products]);
     }
 
     //Create a new product
     public function create(Request $req){
         //Inputs must be...
         $validator = Validator::make($req->all(), [
-            "title" => "required",
-            "price" => "required|integer",
+            "title" => "required|string",
+            "description" => "required|string",
+            "price" => "numeric|numeric",
             "stock" => "required|integer",
             "product_image" => "image|max:1999|required",
         ]);
@@ -67,7 +68,7 @@ class ProductController extends Controller
          'title' => 'string', 
          'description' => 'string', 
          'stock' => 'integer', 
-         'price' => 'integer',
+         'price' => 'numeric',
         ]);
         //Inputs validion
         if($validator->fails()){

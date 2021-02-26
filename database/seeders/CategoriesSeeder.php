@@ -18,7 +18,8 @@ class CategoriesSeeder extends Seeder
         
         $categories = [
             ['name' => 'Parafarmacia', 'slug' => 'parafarmacia', 'created_at' => $now, 'updated_at' => $now],
-            ['name' => 'Integratori', 'slug' => 'integratori', 'created_at' => $now, 'updated_at' => $now]
+            ['name' => 'Integratori', 'slug' => 'integratori', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Cosmetica', 'slug' => 'cosmetica', 'created_at' => $now, 'updated_at' => $now]
         ];
 
         foreach($categories as $category){
