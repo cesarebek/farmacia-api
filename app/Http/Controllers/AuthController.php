@@ -25,7 +25,7 @@ class AuthController extends Controller
         //Check if user already exists
         if(User::where('email', $req['email'])->exists()){
             return response()->json([
-                "message"=>"User already exist, please login"
+                "message"=>"Questa e-mail risulta già registrata. Effettua la login."
             ], 400);
         }
         //Hashing password
@@ -38,7 +38,7 @@ class AuthController extends Controller
         $token = $user->createToken('token')->plainTextToken;
 
         return response()->json([
-            "message" => "Success! registration completed", 
+            "message" => "Registrazione completata!", 
             "token" => $token,
             "data" => $user
         ]);
@@ -60,7 +60,7 @@ class AuthController extends Controller
         $user = User::where("email", $req->email)->first();
 
         if(is_null($user)) {
-            return response()->json(["message" => "Failed! email not found"]);
+            return response()->json(["message" => "Non è stato trovato un account associato a questa e-mail."],401);
         }
 
         if(Auth::attempt(['email' => $req->email, 'password' => $req->password])){
@@ -68,14 +68,14 @@ class AuthController extends Controller
         $token = $user->createToken('token')->plainTextToken;
         $user->roles;
         return response()->json([
-            'message'=>'User successfully logged!',
+            'message'=>"L'autenticazione è andata a buon fine!",
             "token" => $token, 
             "data" => $user,
-            ]);
+        ]);
         } else {
             return response()->json([
-                "message" => "Whoops! invalid password"
-            ]);
+                "message" => "Whoops! Password errata, riprova!"
+            ], 401);
         }
     }
 }

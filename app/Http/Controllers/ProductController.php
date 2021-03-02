@@ -33,6 +33,9 @@ class ProductController extends Controller
         if($validator->fails()) {
             return response()->json(["message" => $validator->errors()]);
         }
+        if(Product::where('title', $req->title)){
+            return response()->json(['message' => 'Questo nome è già stato assegnato ad un altro prodotto.']);
+        }
         //Upload image
         $localStore = $req->file('product_image')->store('public/product_images');
         
@@ -46,7 +49,7 @@ class ProductController extends Controller
         // Creating product
         $product = Product::create($inputs);
         //Product created response
-        return response()->json(['message' => 'Product created successfully', 'data' => $product]);
+        return response()->json(['message' => 'Prodotto aggiunto con successo!', 'data' => $product]);
          
     }
 
@@ -61,7 +64,7 @@ class ProductController extends Controller
     //Update a product
     public function update(Product $product, Request $req){   
         if(is_null($product)){
-            return response()->json(['message' => 'Product not found.']);
+            return response()->json(['message' => 'Prodotto non trovato.']);
         }
         //Inputs must be...
         $validator = Validator::make($req->all(), [
@@ -77,18 +80,18 @@ class ProductController extends Controller
         //Updating product
         $productUpdate = $product->update($req->all());
         //Product updated response
-        return response()->json(['message' => 'Product updated successfully.', 'data' => $productUpdate]);
+        return response()->json(['message' => 'Prodotto aggiornato con successo!', 'data' => $productUpdate]);
     }
 
     //Delete a product
     public function destroy(Product $product){
         //Check if product exists
         if(is_null($product)){
-            return response()->json(['message' => 'Product not found.']);
+            return response()->json(['message' => 'Prodotto non trovato.']);
         }
         //Deliting
         $product->delete();
         //Response
-        return response()->json(['message' => 'Product deleted successfully.']);
+        return response()->json(['message' => 'Prodotto eliminato con successo!']);
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,7 @@ Route::prefix('/products')->group(function(){
 });
 Route::get('/categories', [CategoryController::class, 'allCategories']);
 Route::get('/categories/{category}', [CategoryController::class, 'categoryProducts']);
+Route::post('/messages', [MessageController::class, 'create']);
 
 Route::middleware('auth:sanctum')->group(function(){
     //User Routes
@@ -56,13 +58,16 @@ Route::middleware('auth:sanctum')->group(function(){
             Route::get('/', [UserController::class, 'index']);
             Route::get('/{user}', [UserController::class, 'destroy']);
         });
-        
         //Admin routes for Orders managment
         Route::prefix('/orders')->group(function(){
             Route::get("/", [OrderController::class, "index"]);
             Route::delete("/{order}", [OrderController::class, "destroy"]);
         });
-        
+        //Admin routes for Messages managment
+         Route::prefix('/messages')->group(function(){
+            Route::get("/", [MessageController::class, "index"]);
+            Route::delete("/{message}", [MessageController::class, "destroy"]);
+        });
     });
     
 });
